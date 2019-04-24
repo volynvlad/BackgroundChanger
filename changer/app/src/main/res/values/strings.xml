@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">BackgroundChanger</string>
-    <string name="camera_text">camera</string>
-    <string name="gallery_text">gallery</string>
-    <string name="send_text">send</string>
-</resources>

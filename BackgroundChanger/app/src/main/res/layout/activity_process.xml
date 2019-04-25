@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.example.backgroundchanger.activity.ProcessActivity">
+
+    <ImageView
+        android:id="@+id/get_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/rotate_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="9"
+                android:background="@android:color/transparent"
+                android:src="@drawable/rotate_left" />
+
+            <ImageButton
+                android:id="@+id/rotate_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="9"
+                android:background="@android:color/transparent"
+                android:src="@drawable/rotate_right" />
+
+            <ImageButton
+                android:id="@+id/reflection_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="9"
+                android:background="@android:color/transparent"
+                android:src="@drawable/reflection_horizontal" />
+
+            <ImageButton
+                android:id="@+id/reflection_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="9"
+                android:background="@android:color/transparent"
+                android:src="@drawable/reflection_vertical" />
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="9"
+            android:background="@android:color/transparent"
+            android:src="@drawable/next"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>

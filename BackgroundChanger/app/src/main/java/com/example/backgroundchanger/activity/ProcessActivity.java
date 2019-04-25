@@ -21,7 +21,7 @@ public class ProcessActivity extends AppCompatActivity {
 
     private static final String TAG = "ProcessActivity";
     //178.121.87.189
-    private static final String URL = "http://127.0.0.1:8000/";
+    private static final String URL = "http://192.168.100.17:8000/";
     ImageView mImageView;
 
     ImageButton mRotateLeft;
@@ -75,7 +75,7 @@ public class ProcessActivity extends AppCompatActivity {
             mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] imageBytes = stream.toByteArray();
             String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            Server.getTest(this, URL);
+            Server.sendImage(this, URL, encodedImage);
         });
     }
 

@@ -22,24 +22,10 @@ import java.util.Map;
 
 public class Server {
     private static final String TAG = "Server";
-    public static void getTest(Context context, String url) {
-        Log.d(TAG, "getTest");
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(
-                Request.Method.GET,
-                url,
-                response -> Toast.makeText(context, "My response", Toast.LENGTH_LONG).show(),
-                error -> {
-                    Log.e(TAG, "Rest Response " + error.toString());
-                    Toast.makeText(context, "Error to connent to " + url, Toast.LENGTH_LONG).show();
-                }
-        );
-        requestQueue.add(request);
-    }
     public static void getImage(Context context, String url) {
         Log.d(TAG, "getImage");
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest objectRequest = new StringRequest(
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,
                 response -> {
@@ -58,7 +44,7 @@ public class Server {
                 }
 
         );
-        requestQueue.add(objectRequest);
+        queue.add(request);
     }
 
     public static void sendImage(Context context, String url, String image) {
@@ -66,35 +52,29 @@ public class Server {
         ProgressDialog progressDialog = new ProgressDialog(context);
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        StringRequest objectRequest = new StringRequest(
+        StringRequest request = new StringRequest(
                 Request.Method.POST,
-                url,
+                url + "?image=" + image,
                 response -> {
-                    if (response == null) {
-                        Toast.makeText(context, "response is null", Toast.LENGTH_LONG).show();
-                    } else {
-                        progressDialog.dismiss();
-                        if (response.equals("true")) {
-                            Toast.makeText(context, "Uploaded Successful", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(context, "Some error occurred!", Toast.LENGTH_LONG).show();
-                        }
-                    }
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Uploaded Successful", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Some error occurred!", Toast.LENGTH_LONG).show();
                 },
                 error -> {
                     Log.e(TAG, "Rest Response " + error.toString());
                     Toast.makeText(context, "Error to connect to " + url, Toast.LENGTH_LONG).show();
                 }
-        ) {
+                )
+        {
             @Override
             protected Map<String, String> getParams() {
                 Log.d(TAG, "getParams");
                 Map<String, String> parameters = new HashMap<>();
-                Log.d(TAG, "parameter - " + image);
                 parameters.put("image", image);
+                Log.d(TAG, parameters.toString());
                 return parameters;
             }
         };
-        queue.add(objectRequest);
+        queue.add(request);
     }
 }

@@ -20,7 +20,7 @@ import java.io.File;
 public class ProcessActivity extends AppCompatActivity {
 
     private static final String TAG = "ProcessActivity";
-    //178.121.87.189
+
     private static final String URL = "http://192.168.100.17:8000/";
     ImageView mImageView;
 

@@ -77,7 +77,7 @@ def drawSegment(baseImg, matImg):
                 dummyImg[y,x,3] = 0
             else:
                 dummyImg[y,x] = [r,g,b,255]
-    print(dummyImg)
+
     img = Image.fromarray(dummyImg)
     img.save(outputFilePath)
 

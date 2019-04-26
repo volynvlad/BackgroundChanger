@@ -16,9 +16,6 @@ import com.example.backgroundchanger.parse.FromBitmapString;
 
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class Server {
     private static final String TAG = "Server";
@@ -47,14 +44,14 @@ public class Server {
         queue.add(request);
     }
 
-    public static void sendImage(Context context, String url, String image) {
+    public static void sendImage(Context context, String url, String image, String name) {
         Log.d(TAG, "sendImage");
         ProgressDialog progressDialog = new ProgressDialog(context);
         RequestQueue queue = Volley.newRequestQueue(context);
 
         StringRequest request = new StringRequest(
                 Request.Method.POST,
-                url + "?image=" + image,
+                url + "?image=" + image + "&name=" + name,
                 response -> {
                     progressDialog.dismiss();
                     Toast.makeText(context, "Uploaded Successful", Toast.LENGTH_LONG).show();
@@ -63,18 +60,7 @@ public class Server {
                 error -> {
                     Log.e(TAG, "Rest Response " + error.toString());
                     Toast.makeText(context, "Error to connect to " + url, Toast.LENGTH_LONG).show();
-                }
-                )
-        {
-            @Override
-            protected Map<String, String> getParams() {
-                Log.d(TAG, "getParams");
-                Map<String, String> parameters = new HashMap<>();
-                parameters.put("image", image);
-                Log.d(TAG, parameters.toString());
-                return parameters;
-            }
-        };
+                });
         queue.add(request);
     }
 }

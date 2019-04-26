@@ -30,6 +30,8 @@ public class ProcessActivity extends AppCompatActivity {
     ImageButton mReflectionVertical;
     ImageButton mNext;
 
+    File mFile;
+
     Bitmap mBitmap;
 
     @Override
@@ -75,7 +77,7 @@ public class ProcessActivity extends AppCompatActivity {
             mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] imageBytes = stream.toByteArray();
             String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            Server.sendImage(this, URL, encodedImage);
+            Server.sendImage(this, URL, encodedImage, mFile.getName());
         });
     }
 
@@ -87,8 +89,8 @@ public class ProcessActivity extends AppCompatActivity {
             String path = intent.getExtras().getString("pathToImage");
             Log.d(TAG, "path : " + path);
             mImageView = findViewById(R.id.get_image);
-            File file = new File(path);
-            mBitmap = FromFileBitmap.getBitmapFromFile(file, mImageView.getWidth(), mImageView.getHeight());
+            mFile = new File(path);
+            mBitmap = FromFileBitmap.getBitmapFromFile(mFile, mImageView.getWidth(), mImageView.getHeight());
 
             mImageView.setImageBitmap(mBitmap);
         }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.content.FileProvider;
@@ -28,6 +29,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -78,10 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCamera() {
         Log.d(TAG,"openCamera");
+        String path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES) + "/Changer/Photo";
+        String timeStamp = new SimpleDateFormat("yyyyMMdd__HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp;
+        String format = ".jpg";
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             mCurrentFile = null;
-            mCurrentFile = FileCreator.createFile();
+            mCurrentFile = FileCreator.createFile(path, imageFileName, format);
             if (mCurrentFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(
                         this,
@@ -104,14 +112,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "width - " + mImageView.getWidth() + " height - " + mImageView.getHeight());
                 mBitmap = BitmapFromFile.getBitmapFromFile(mCurrentFile, mImageView.getWidth(), mImageView.getHeight());
                 AddToGallery.galleryAddPic(mCurrentFile, this);
-                SendImageToActivity.sendPathToActivity(mCurrentFile.getAbsolutePath(), this);
+                SendImageToActivity.sendPathToActivityForProcess(mCurrentFile.getAbsolutePath(), this);
             } else if (requestCode == REQUEST_GALLERY_PHOTO) {
                 Log.d(TAG, "operation was successful REQUEST_GALLERY_PHOTO");
                 Log.d(TAG, "width - " + mImageView.getWidth() + " height - " + mImageView.getHeight());
                 Uri pickedImage = data.getData();
                 File file = new File(FromUriRealPath.getRealPathFromURI(pickedImage, this));
                 mBitmap = BitmapFromFile.getBitmapFromFile(file, mImageView.getMaxWidth(), mImageView.getMaxHeight());
-                SendImageToActivity.sendPathToActivity(file.getAbsolutePath(), this);
+                SendImageToActivity.sendPathToActivityForProcess(file.getAbsolutePath(), this);
             }
         }
     }

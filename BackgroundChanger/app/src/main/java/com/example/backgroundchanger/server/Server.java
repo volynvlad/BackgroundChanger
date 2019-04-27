@@ -20,6 +20,7 @@ public class Server {
         Log.d(TAG, "sendImage");
         RequestQueue queue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
+
         try {
             jsonObject.put("image", image);
             jsonObject.put("name", name);
@@ -32,26 +33,14 @@ public class Server {
                 url,
                 jsonObject,
                 response -> {
-                    Log.d(TAG, "Rest Response " + response.toString());
-                    try {
-                        String getName = response.getJSONObject("name").toString();
-                        String getImage = response.getJSONObject("image").toString();
-
-                        Log.d(TAG, "response - " + getName);
-                        Log.d(TAG, "response - " + getImage);
-
-                        Intent intent = new Intent(context, ChooseBackground.class);
-                        intent.putExtra("image", getImage);
-                        intent.putExtra("name", getName);
-
-                        context.startActivity(intent);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    Intent intent = new Intent(context, ChooseBackground.class);
+                    intent.putExtra("image",response.toString().substring(10, response.toString().length() - 2));
+                    intent.putExtra("name", name.substring(0, name.length() - 4));
+                    context.startActivity(intent);
                 },
                 error -> {
                     Log.e(TAG, "Rest Response " + error.toString());
-                    Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, error.toString() + " try again", Toast.LENGTH_LONG).show();
                 }){
             @Override
             public String getBodyContentType() {

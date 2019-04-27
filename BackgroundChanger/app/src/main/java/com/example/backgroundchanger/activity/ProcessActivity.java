@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.backgroundchanger.modify.ModifyImage;
 import com.example.backgroundchanger.parse.BitmapFromFile;
@@ -16,12 +17,14 @@ import com.example.changer.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.Objects;
 
 public class ProcessActivity extends AppCompatActivity {
 
     private static final String TAG = "ProcessActivity";
 
-    private static final String URL = "http://192.168.100.17:8000/";
+    //192.168.100.17
+    private static final String URL = "http://10.42.0.1:8000/";
     ImageView mImageView;
 
     ImageButton mRotateLeft;
@@ -73,6 +76,7 @@ public class ProcessActivity extends AppCompatActivity {
 
         mNext.setOnClickListener(v -> {
             Log.d(TAG, "next");
+            Toast.makeText(this, "you sent image", Toast.LENGTH_SHORT).show();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] imageBytes = stream.toByteArray();
@@ -86,7 +90,7 @@ public class ProcessActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             Intent intent = getIntent();
-            String path = intent.getExtras().getString("pathToImage");
+            String path = Objects.requireNonNull(intent.getExtras()).getString("pathToImage");
             Log.d(TAG, "path : " + path);
             mImageView = findViewById(R.id.get_image);
             mFile = new File(path);

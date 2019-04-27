@@ -8,8 +8,8 @@ import android.util.Log;
 
 import java.io.File;
 
-public class FromFileBitmap {
-    private static final String TAG = "FromFileBitmap";
+public class BitmapFromFile {
+    private static final String TAG = "BitmapFromFile";
     public static Bitmap getBitmapFromFile(File file, int width, int height) {
         Log.d(TAG,"getBitmapFromFile");
 

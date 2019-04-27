@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.backgroundchanger.modify.ModifyImage;
-import com.example.backgroundchanger.parse.FromFileBitmap;
+import com.example.backgroundchanger.parse.BitmapFromFile;
 import com.example.backgroundchanger.server.Server;
 import com.example.changer.R;
 
@@ -90,7 +90,7 @@ public class ProcessActivity extends AppCompatActivity {
             Log.d(TAG, "path : " + path);
             mImageView = findViewById(R.id.get_image);
             mFile = new File(path);
-            mBitmap = FromFileBitmap.getBitmapFromFile(mFile, mImageView.getWidth(), mImageView.getHeight());
+            mBitmap = BitmapFromFile.getBitmapFromFile(mFile, mImageView.getWidth(), mImageView.getHeight());
 
             mImageView.setImageBitmap(mBitmap);
         }

@@ -5,7 +5,7 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 
-public class FromStringBitmap {
+public class StringFromBitmap {
     public static String getStringFromBitmap(Bitmap bitmapPicture) {
         final int COMPRESSION_QUALITY = 100;
         String encodedImage;

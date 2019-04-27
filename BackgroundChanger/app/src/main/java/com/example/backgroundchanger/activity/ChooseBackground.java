@@ -1,12 +1,13 @@
 package com.example.backgroundchanger.activity;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.backgroundchanger.parse.BitmapFromString;
 import com.example.changer.R;
 
 public class ChooseBackground extends AppCompatActivity {
@@ -22,8 +23,10 @@ public class ChooseBackground extends AppCompatActivity {
         mGalleryButton = findViewById(R.id.gallery_button);
 
         Bitmap bitmap;
-        byte[] bytes = getIntent().getByteArrayExtra("image");
-        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        String imageString = getIntent().getExtras().getString("image");
+        String imageName = getIntent().getExtras().getString("name");
+
+        bitmap = BitmapFromString.getBitmapFromString(imageString);
 
         mImageView.setImageBitmap(bitmap);
     }

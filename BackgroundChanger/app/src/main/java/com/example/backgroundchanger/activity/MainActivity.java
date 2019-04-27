@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.backgroundchanger.add.AddToGallery;
 import com.example.backgroundchanger.create.FileCreator;
-import com.example.backgroundchanger.parse.FromFileBitmap;
+import com.example.backgroundchanger.parse.BitmapFromFile;
 import com.example.backgroundchanger.parse.FromUriRealPath;
 import com.example.backgroundchanger.send.SendImageToActivity;
 import com.example.changer.R;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             if (requestCode == REQUEST_TAKE_PHOTO) {
                 Log.d(TAG, "operation was successful REQUEST_TAKE_PHOTO");
                 Log.d(TAG, "width - " + mImageView.getWidth() + " height - " + mImageView.getHeight());
-                mBitmap = FromFileBitmap.getBitmapFromFile(mCurrentFile, mImageView.getWidth(), mImageView.getHeight());
+                mBitmap = BitmapFromFile.getBitmapFromFile(mCurrentFile, mImageView.getWidth(), mImageView.getHeight());
                 AddToGallery.galleryAddPic(mCurrentFile, this);
                 SendImageToActivity.sendPathToActivity(mCurrentFile.getAbsolutePath(), this);
             } else if (requestCode == REQUEST_GALLERY_PHOTO) {
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "width - " + mImageView.getWidth() + " height - " + mImageView.getHeight());
                 Uri pickedImage = data.getData();
                 File file = new File(FromUriRealPath.getRealPathFromURI(pickedImage, this));
-                mBitmap = FromFileBitmap.getBitmapFromFile(file, mImageView.getMaxWidth(), mImageView.getMaxHeight());
+                mBitmap = BitmapFromFile.getBitmapFromFile(file, mImageView.getMaxWidth(), mImageView.getMaxHeight());
                 SendImageToActivity.sendPathToActivity(file.getAbsolutePath(), this);
             }
         }

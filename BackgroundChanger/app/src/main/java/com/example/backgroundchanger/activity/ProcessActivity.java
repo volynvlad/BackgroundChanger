@@ -76,7 +76,7 @@ public class ProcessActivity extends AppCompatActivity {
 
         mNext.setOnClickListener(v -> {
             Log.d(TAG, "next");
-            Toast.makeText(this, "you sent image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You sent image", Toast.LENGTH_SHORT).show();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] imageBytes = stream.toByteArray();

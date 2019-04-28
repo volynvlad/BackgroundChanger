@@ -38,6 +38,7 @@ public class ChooseBackground extends AppCompatActivity {
 
     Bitmap mResultBitmap;
     Bitmap mBackgroundBitmap;
+    Bitmap mFrontBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +60,15 @@ public class ChooseBackground extends AppCompatActivity {
 
         mSaveButton.setOnClickListener(v -> {
             Log.d(TAG, "onClick to save");
-            if (mResultBitmap == null) {
+            if (mFrontBitmap == null) {
                 Toast.makeText(this, "choose background", Toast.LENGTH_SHORT).show();
             } else {
                 saveImage(imageName);
             }
         });
 
-        mResultBitmap = BitmapFromString.getBitmapFromString(imageString);
-        mImageView.setImageBitmap(mResultBitmap);
+        mFrontBitmap = BitmapFromString.getBitmapFromString(imageString);
+        mImageView.setImageBitmap(mFrontBitmap);
     }
 
     private void openGallery() {
@@ -82,9 +83,10 @@ public class ChooseBackground extends AppCompatActivity {
         Log.d(TAG, "saveImage");
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Changer/Processed";
         File file = FileCreator.createFile(path, imageName, ".jpg");
-        AddToGallery.galleryAddPic(file, this);
         try {
             FileFromBitmap.getFile(file, mResultBitmap);
+            AddToGallery.galleryAddPic(file, this);
+            Toast.makeText(this, "Saved to " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,7 +99,6 @@ public class ChooseBackground extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_GALLERY_PHOTO) {
                 Log.d(TAG, "operation was successful REQUEST_GALLERY_PHOTO");
-                Log.d(TAG, "width - " + mImageView.getWidth() + " height - " + mImageView.getHeight());
                 Uri pickedImage = data.getData();
                 File file = new File(FromUriRealPath.getRealPathFromURI(pickedImage, this));
                 mBackgroundBitmap = BitmapFromFile.getBitmapFromFile(file, mImageView.getMaxWidth(), mImageView.getMaxHeight());
@@ -106,12 +107,12 @@ public class ChooseBackground extends AppCompatActivity {
                     Log.d(TAG, "back bitmap - null");
                 }
 
-                if (mResultBitmap == null) {
+                if (mFrontBitmap == null) {
                     Log.d(TAG, "cut bitmap - null");
                 }
 
-                if (mBackgroundBitmap != null && mResultBitmap != null) {
-                    mResultBitmap = MergeBitmap.mergeImage(mBackgroundBitmap, mResultBitmap);
+                if (mBackgroundBitmap != null && mFrontBitmap != null) {
+                    mResultBitmap = MergeBitmap.mergeImage(mBackgroundBitmap, mFrontBitmap);
                     mImageView.setImageBitmap(mResultBitmap);
                 }
 

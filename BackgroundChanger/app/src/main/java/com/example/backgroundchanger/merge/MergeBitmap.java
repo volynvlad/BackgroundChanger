@@ -4,16 +4,17 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class MergeBitmap {
-    public static Bitmap mergeImage(Bitmap b1, Bitmap b2) {
-        Bitmap mBitmap = Bitmap.createBitmap(b1.getWidth(), b1.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(mBitmap);
+    public static Bitmap mergeImage(Bitmap background, Bitmap front) {
+        Bitmap result = Bitmap.createBitmap(background.getWidth(), background.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
 
-        int adWDelta = b1.getWidth() - b2.getWidth()/2 ;
-        int adHDelta = b1.getHeight() - b2.getHeight()/2;
+        int widthBack  = background.getWidth();
+        int widthFront = front.getWidth();
+        int move = (widthBack - widthFront) / 2;
 
-        canvas.drawBitmap(b1, 0, 0, null);
-        canvas.drawBitmap(b2, adWDelta, adHDelta, null);
+        canvas.drawBitmap(background, 0, 0, null);
+        canvas.drawBitmap(front, move, move, null);
 
-        return mBitmap;
+        return result;
     }
 }

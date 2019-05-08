@@ -7,7 +7,6 @@ import android.util.Base64;
 public class BitmapFromString {
     public static Bitmap getBitmapFromString(String stringPicture) {
         byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }

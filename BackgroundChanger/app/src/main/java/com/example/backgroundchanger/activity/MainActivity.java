@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             if (requestCode == REQUEST_TAKE_PHOTO) {
                 Log.d(TAG, "operation was successful REQUEST_TAKE_PHOTO");
                 Log.d(TAG, "width - " + mImageView.getWidth() + " height - " + mImageView.getHeight());
-                mBitmap = BitmapFromFile.getBitmapFromFile(mCurrentFile, mImageView.getWidth(), mImageView.getHeight());
+                mBitmap = BitmapFromFile.getBitmapFromFile(this, mCurrentFile, mImageView.getWidth(), mImageView.getHeight());
                 AddToGallery.galleryAddPic(mCurrentFile, this);
                 SendImageToActivity.sendPathToActivityForProcess(mCurrentFile.getAbsolutePath(), this);
             } else if (requestCode == REQUEST_GALLERY_PHOTO) {
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "width - " + mImageView.getWidth() + " height - " + mImageView.getHeight());
                 Uri pickedImage = data.getData();
                 File file = new File(FromUriRealPath.getRealPathFromURI(pickedImage, this));
-                mBitmap = BitmapFromFile.getBitmapFromFile(file, mImageView.getMaxWidth(), mImageView.getMaxHeight());
+                mBitmap = BitmapFromFile.getBitmapFromFile(this, file, mImageView.getMaxWidth(), mImageView.getMaxHeight());
                 SendImageToActivity.sendPathToActivityForProcess(file.getAbsolutePath(), this);
             }
         }

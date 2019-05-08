@@ -23,8 +23,6 @@ public class ProcessActivity extends AppCompatActivity {
 
     private static final String TAG = "ProcessActivity";
 
-    //192.168.100.17
-    private static final String URL = "http://10.42.0.1:8000/";
     ImageView mImageView;
 
     ImageButton mRotateLeft;
@@ -81,7 +79,7 @@ public class ProcessActivity extends AppCompatActivity {
             mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] imageBytes = stream.toByteArray();
             String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            Server.sendImage(this, URL, encodedImage, mFile.getName());
+            Server.sendImage(this, encodedImage, mFile.getName());
         });
     }
 
@@ -94,7 +92,7 @@ public class ProcessActivity extends AppCompatActivity {
             Log.d(TAG, "path : " + path);
             mImageView = findViewById(R.id.get_image);
             mFile = new File(path);
-            mBitmap = BitmapFromFile.getBitmapFromFile(mFile, mImageView.getWidth(), mImageView.getHeight());
+            mBitmap = BitmapFromFile.getBitmapFromFile(this, mFile, mImageView.getWidth(), mImageView.getHeight());
 
             mImageView.setImageBitmap(mBitmap);
         }

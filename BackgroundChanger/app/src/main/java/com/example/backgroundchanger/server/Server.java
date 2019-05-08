@@ -16,7 +16,9 @@ import org.json.JSONObject;
 
 public class Server {
     private static final String TAG = "Server";
-    public static void sendImage(Context context, String url, String image, String name) {
+    public static void sendImage(Context context, String image, String name) {
+        //192.168.100.17
+        final String url = "http://10.42.0.1:8000/";
         Log.d(TAG, "sendImage");
         RequestQueue queue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
@@ -40,7 +42,7 @@ public class Server {
                 },
                 error -> {
                     Log.e(TAG, "Rest Response " + error.toString());
-                    Toast.makeText(context, error.toString() + " try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Network error. Check your internet connection", Toast.LENGTH_LONG).show();
                 }){
             @Override
             public String getBodyContentType() {

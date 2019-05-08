@@ -18,6 +18,7 @@ public class FromUriRealPath {
                         null,
                         null,
                         null);
+        assert cursor != null;
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
 

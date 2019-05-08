@@ -1,5 +1,6 @@
 package com.example.backgroundchanger.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
@@ -9,6 +10,8 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -20,14 +23,13 @@ import com.example.backgroundchanger.parse.BitmapFromFile;
 import com.example.backgroundchanger.parse.BitmapFromString;
 import com.example.backgroundchanger.parse.FileFromBitmap;
 import com.example.backgroundchanger.parse.FromUriRealPath;
-import com.example.backgroundchanger.send.SendImageToActivity;
 import com.example.changer.R;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public class ChooseBackground extends AppCompatActivity {
+public class ChooseBackground extends AppCompatActivity implements View.OnTouchListener {
     private static final String TAG = "ChooseBackground";
     private static final int REQUEST_GALLERY_PHOTO = 2;
 
@@ -40,6 +42,10 @@ public class ChooseBackground extends AppCompatActivity {
     Bitmap mBackgroundBitmap;
     Bitmap mFrontBitmap;
 
+    float x;
+    float y;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
@@ -50,8 +56,8 @@ public class ChooseBackground extends AppCompatActivity {
         mGalleryButton  =   findViewById(R.id.gallery_button);
         mSaveButton     =   findViewById(R.id.save_button);
 
-        String imageString = Objects.requireNonNull(getIntent().getExtras()).getString("image");
-        String imageName = getIntent().getExtras().getString("name");
+        String imageString  = Objects.requireNonNull(getIntent().getExtras()).getString("image");
+        String imageName    = getIntent().getExtras().getString("name");
 
         mGalleryButton.setOnClickListener(v -> {
             Log.d(TAG,"onClick to gallery");
@@ -68,7 +74,17 @@ public class ChooseBackground extends AppCompatActivity {
         });
 
         mFrontBitmap = BitmapFromString.getBitmapFromString(imageString);
-        mImageView.setImageBitmap(mFrontBitmap);
+        mImageView.setOnTouchListener(this::onTouch);
+
+        if (mBackgroundBitmap == null) {
+            mImageView.setImageBitmap(mFrontBitmap);
+        }/*
+        if (mBackgroundBitmap != null && mFrontBitmap != null) {
+            //xOfFront = (mBackgroundBitmap.getWidth() - mFrontBitmap.getWidth()) / 2;
+            //yOfFront = (mBackgroundBitmap.getWidth() - mFrontBitmap.getWidth()) / 2;
+            mResultBitmap = MergeBitmap.mergeImage(mBackgroundBitmap, mFrontBitmap, xOfFront, yOfFront);
+            mImageView.setImageBitmap(mResultBitmap);
+        }*/
     }
 
     private void openGallery() {
@@ -101,7 +117,7 @@ public class ChooseBackground extends AppCompatActivity {
                 Log.d(TAG, "operation was successful REQUEST_GALLERY_PHOTO");
                 Uri pickedImage = data.getData();
                 File file = new File(FromUriRealPath.getRealPathFromURI(pickedImage, this));
-                mBackgroundBitmap = BitmapFromFile.getBitmapFromFile(file, mImageView.getMaxWidth(), mImageView.getMaxHeight());
+                mBackgroundBitmap = BitmapFromFile.getBitmapFromFile(this, file, mImageView.getMaxWidth(), mImageView.getMaxHeight());
 
                 if (mBackgroundBitmap == null) {
                     Log.d(TAG, "back bitmap - null");
@@ -112,11 +128,43 @@ public class ChooseBackground extends AppCompatActivity {
                 }
 
                 if (mBackgroundBitmap != null && mFrontBitmap != null) {
-                    mResultBitmap = MergeBitmap.mergeImage(mBackgroundBitmap, mFrontBitmap);
+                    //xOfFront = (mBackgroundBitmap.getWidth() - mFrontBitmap.getWidth()) / 2;
+                    //yOfFront = (mBackgroundBitmap.getWidth() - mFrontBitmap.getWidth()) / 2;
+                    mResultBitmap = MergeBitmap.mergeImage(mBackgroundBitmap, mFrontBitmap,
+                            x - mFrontBitmap.getWidth()  / 2,
+                            y - mFrontBitmap.getHeight() / 2);
                     mImageView.setImageBitmap(mResultBitmap);
                 }
 
             }
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        Log.d(TAG, "onTouch");
+
+        int ev = event.getAction();
+        if (ev == MotionEvent.ACTION_DOWN) {
+            x = event.getX();
+            y = event.getY();
+            return true;
+        } else if (ev == MotionEvent.ACTION_UP) {
+            x = event.getX();
+            y = event.getY();
+        } else if (ev == MotionEvent.ACTION_MOVE) {
+            x = event.getX();
+            y = event.getY();
+        }
+
+        if (mBackgroundBitmap != null && mFrontBitmap != null) {
+            mResultBitmap = MergeBitmap.mergeImage(mBackgroundBitmap, mFrontBitmap,
+                    x - mFrontBitmap.getWidth()  / 2,
+                    y - mFrontBitmap.getHeight() / 2 - mBackgroundBitmap.getHeight() / 2);
+            mImageView.setImageBitmap(mResultBitmap);
+        }
+
+
+        return super.onTouchEvent(event);
     }
 }
